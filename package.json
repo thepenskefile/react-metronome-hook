@@ -1,7 +1,7 @@
 {
   "name": "react-metronome-hook",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "A react hook to keep in time",
   "main": "lib/index.js",
   "scripts": {
     "build": "npm run clean && rollup -c rollup.config.js",
@@ -10,7 +10,7 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix"
   },
-  "author": "",
+  "author": "thepenskefile",
   "license": "MIT",
   "peerDependencies": {
     "react": "^16.8.0"
