@@ -7,7 +7,7 @@ npm i react-metronome-hook
 `
 
 ## Usage
-```
+```jsx
 import { useMetronome } from 'react-metronome-hook';
 import click1 from './click1.wav';
 import click2 from './click2.wav';
@@ -37,6 +37,7 @@ function App() {
       <button onClick={() => setSounds([click3, click4])}>Change sounds</button>
     </div>
   );
+  
 }
 
 ```
