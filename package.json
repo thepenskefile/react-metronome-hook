@@ -11,7 +11,7 @@
     "lint:fix": "eslint src/ --fix"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "peerDependencies": {
     "react": "^16.8.0"
   },
