@@ -23,7 +23,7 @@ export const useMetronome = (
     if (newBeatsPerMeasure && !isNaN(newBeatsPerMeasure)) {
       setBeatsPerMeasure(parseInt(newBeatsPerMeasure, 10));
     } else {
-      setBeatsPerMeasure(4);
+      setBeatsPerMeasure(DEFAULT_BEATS_PER_MEASURE);
     }
   }, 500);
 
@@ -31,7 +31,7 @@ export const useMetronome = (
     if (newBpm && !isNaN(newBpm)) {
       setBpm(parseInt(newBpm, 10));
     } else {
-      setBpm(60);
+      setBpm(DEFAULT_BPM);
     }
   }, 500);
 
