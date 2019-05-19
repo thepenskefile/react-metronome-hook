@@ -1,6 +1,6 @@
 {
   "name": "react-metronome-hook",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A react hook to keep in time",
   "main": "lib/index.js",
   "scripts": {
