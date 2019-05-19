@@ -1,6 +1,8 @@
 # react-metronome-hook
 A react hook to keep in time
 
+[Example](https://m7k474o1v8.codesandbox.io/)
+
 ## Install
 `
 npm i react-metronome-hook
