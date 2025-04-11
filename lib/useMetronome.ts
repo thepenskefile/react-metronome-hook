@@ -9,28 +9,64 @@ const MAX_TEMPO = 300;
 const MIN_BEATS_PER_MEASURE = 1;
 const MAX_BEATS_PER_MEASURE = 16;
 
+/**
+ * Props for configuring the metronome hook
+ */
 export interface UseMetronomeProps {
+  /** Initial tempo in beats per minute (BPM). Defaults to 60. */
   initialTempo?: number;
+  /** Initial number of beats per measure. Defaults to 4. */
   initialBeatsPerMeasure?: number;
+  /** Array of two sound file paths: [downbeat, upbeat]. Required. */
   initialTickSounds: [string, string];
+  /** Initial volume level (0 to 1). Defaults to 1. */
   initialVolume?: number;
 }
 
+/**
+ * Controls and state provided by the metronome hook
+ */
 export interface MetronomeControls {
+  /** Current number of beats per measure */
   beatsPerMeasure: number;
+  /** Current tempo in beats per minute (BPM) */
   tempo: number;
+  /** Whether the metronome is currently playing */
   isPlaying: boolean;
+  /** Current beat number in the measure (1-based) */
   currentBeat: number;
+  /** Current volume level (0 to 1) */
   volume: number;
+  /** Set the number of beats per measure (1-16) */
   setTimeSignature: (value: number) => void;
+  /** Set the tempo in beats per minute (20-300) */
   setTempo: (value: number) => void;
+  /** Set the sound files for downbeat and upbeat */
   setTickSounds: (sounds: string[]) => void;
+  /** Set the volume level (0 to 1) */
   setVolume: (volume: number) => void;
+  /** Start the metronome */
   startMetronome: () => void;
+  /** Stop the metronome */
   stopMetronome: () => void;
+  /** Toggle the metronome on/off */
   toggleMetronome: () => void;
 }
 
+/**
+ * A React hook that provides metronome functionality
+ * @param props - Configuration options for the metronome
+ * @returns Metronome controls and state
+ * @example
+ * ```tsx
+ * const { isPlaying, tempo, startMetronome, stopMetronome } = useMetronome({
+ *   initialTempo: 120,
+ *   initialBeatsPerMeasure: 4,
+ *   initialTickSounds: ['/tick.mp3', '/tock.mp3'],
+ *   initialVolume: 0.5
+ * });
+ * ```
+ */
 export const useMetronome = ({
   initialTempo = DEFAULT_TEMPO,
   initialBeatsPerMeasure = DEFAULT_BEATS_PER_MEASURE,
@@ -47,10 +83,20 @@ export const useMetronome = ({
   const [volume, setVolumeState] = useState<number>(initialVolume);
   const [currentBeat, setCurrentBeat] = useState<number>(FIRST_BEAT);
 
+  /**
+   * Validates and clamps tempo value within allowed range
+   * @param value - Tempo value to validate
+   * @returns Clamped tempo value between MIN_TEMPO and MAX_TEMPO
+   */
   const validateTempo = (value: number): number => {
     return Math.min(Math.max(value, MIN_TEMPO), MAX_TEMPO);
   };
 
+  /**
+   * Validates and clamps beats per measure value within allowed range
+   * @param value - Beats per measure value to validate
+   * @returns Clamped value between MIN_BEATS_PER_MEASURE and MAX_BEATS_PER_MEASURE
+   */
   const validateBeatsPerMeasure = (value: number): number => {
     return Math.min(
       Math.max(value, MIN_BEATS_PER_MEASURE),
@@ -58,10 +104,18 @@ export const useMetronome = ({
     );
   };
 
+  /**
+   * Validates and clamps volume value within allowed range
+   * @param value - Volume value to validate
+   * @returns Clamped volume value between 0 and 1
+   */
   const validateVolume = (value: number): number => {
     return Math.min(Math.max(value, 0), 1);
   };
 
+  /**
+   * Creates and memoizes the downbeat sound
+   */
   const downbeatSound = useMemo(() => {
     if (!tickSounds?.[0]) return null;
     const audio = new Audio(tickSounds[0]);
@@ -69,6 +123,9 @@ export const useMetronome = ({
     return audio;
   }, [tickSounds, volume]);
 
+  /**
+   * Creates and memoizes the upbeat sound
+   */
   const upbeatSound = useMemo(() => {
     if (!tickSounds?.[1]) return null;
     const audio = new Audio(tickSounds[1]);
@@ -76,6 +133,10 @@ export const useMetronome = ({
     return audio;
   }, [tickSounds, volume]);
 
+  /**
+   * Sets the number of beats per measure, with validation
+   * @param newBeatsPerMeasure - New number of beats per measure
+   */
   const setTimeSignature = (newBeatsPerMeasure: number) => {
     if (!isNaN(newBeatsPerMeasure)) {
       setBeatsPerMeasureState(validateBeatsPerMeasure(newBeatsPerMeasure));
@@ -84,6 +145,10 @@ export const useMetronome = ({
     }
   };
 
+  /**
+   * Sets the tempo, with validation
+   * @param newTempo - New tempo value in BPM
+   */
   const setTempo = (newTempo: number) => {
     if (newTempo && !isNaN(newTempo)) {
       setTempoState(validateTempo(newTempo));
@@ -92,12 +157,20 @@ export const useMetronome = ({
     }
   };
 
+  /**
+   * Sets the tick sounds for downbeat and upbeat
+   * @param newSounds - Array of two sound file paths
+   */
   const setTickSounds = (newSounds: string[]) => {
     if (newSounds.length === 2) {
       setTickSoundsState(newSounds);
     }
   };
 
+  /**
+   * Sets the volume level, with validation
+   * @param newVolume - New volume level (0 to 1)
+   */
   const setVolume = (newVolume: number) => {
     const validatedVolume = validateVolume(newVolume);
     setVolumeState(validatedVolume);
@@ -105,6 +178,9 @@ export const useMetronome = ({
     if (upbeatSound) upbeatSound.volume = validatedVolume;
   };
 
+  /**
+   * Resets the audio elements to their initial state
+   */
   const resetAudio = useCallback(() => {
     if (downbeatSound) {
       downbeatSound.pause();
@@ -116,6 +192,9 @@ export const useMetronome = ({
     }
   }, [downbeatSound, upbeatSound]);
 
+  /**
+   * Plays the appropriate beat sound and updates the current beat
+   */
   const playBeat = useCallback(() => {
     resetAudio();
     setCurrentBeat((beat) => {
