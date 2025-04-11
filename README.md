@@ -1,54 +1,111 @@
-# React + TypeScript + Vite
+# React Metronome Hook
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A custom React hook for creating a metronome with configurable tempo, time signature, and sound effects.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Configurable tempo (BPM)
+- Customizable time signature
+- Support for different sound effects for downbeat and upbeat
+- Volume control
+- Play/pause functionality
+- Current beat tracking
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+npm install react-metronome-hook
+# or
+yarn add react-metronome-hook
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Usage
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```tsx
+import { useMetronome } from "react-metronome-hook";
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+function MetronomeComponent() {
+  const {
+    tempo,
+    isPlaying,
+    currentBeat,
+    beatsPerMeasure,
+    setTempo,
+    setTimeSignature,
+    startMetronome,
+    stopMetronome,
+    toggleMetronome,
+  } = useMetronome({
+    initialTempo: 120,
+    initialBeatsPerMeasure: 4,
+    initialTickSounds: ["/path/to/downbeat.mp3", "/path/to/upbeat.mp3"],
+    initialVolume: 0.8,
+  });
+
+  return (
+    <div>
+      <div>Current Beat: {currentBeat}</div>
+      <div>Tempo: {tempo} BPM</div>
+      <div>Time Signature: {beatsPerMeasure}/4</div>
+      <button onClick={toggleMetronome}>{isPlaying ? "Stop" : "Start"}</button>
+    </div>
+  );
+}
 ```
+
+## API
+
+### `useMetronome` Hook
+
+#### Props
+
+```typescript
+interface UseMetronomeProps {
+  initialTempo?: number; // Default: 60
+  initialBeatsPerMeasure?: number; // Default: 4
+  initialTickSounds: [string, string]; // [downbeatSound, upbeatSound]
+  initialVolume?: number; // Default: 1
+}
+```
+
+#### Return Value
+
+```typescript
+interface MetronomeControls {
+  tempo: number;
+  isPlaying: boolean;
+  currentBeat: number;
+  beatsPerMeasure: number;
+  volume: number;
+  setTempo: (value: number) => void;
+  setTimeSignature: (value: number) => void;
+  setTickSounds: (sounds: [string, string]) => void;
+  setVolume: (volume: number) => void;
+  startMetronome: () => void;
+  stopMetronome: () => void;
+  toggleMetronome: () => void;
+}
+```
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build library
+npm run build
+
+# Run tests
+npm test
+
+# Lint code
+npm run lint
+```
+
+## License
+
+MIT
