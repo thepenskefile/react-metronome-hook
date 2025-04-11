@@ -1,102 +1,54 @@
-# react-metronome-hook
-A react hook to keep in time
+# React + TypeScript + Vite
 
-[Example](https://codesandbox.io/s/m7k474o1v8)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Install
-`
-npm i react-metronome-hook
-`
+Currently, two official plugins are available:
 
-## Usage
-```jsx
-import { useMetronome } from 'react-metronome-hook';
-import click1 from './click1.wav';
-import click2 from './click2.wav';
-import click3 from './click3.wav';
-import click4 from './click4.wav';
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-function App() {
+## Expanding the ESLint configuration
 
-  const {
-    startMetronome,
-    isTicking,
-    stopMetronome,
-    bpm,
-    setBpm,
-    setBeatsPerMeasure,
-    setSounds
-  } = useMetronome(120, 4, [click1, click2]);
-  
-  return (
-    <div>
-      <button onClick={isTicking ? stopMetronome : startMetronome}>
-        {isTicking ? "Stop" : "Start"}
-      </button>
-      <div>{bpm}</div>
-      <input placeholder="Change BPM" onChange={e => setBpm(e.target.value)} />
-      <input placeholder="Change beats per measure" onChange={e => setBeatsPerMeasure(e.target.value)} />
-      <button onClick={() => setSounds([click3, click4])}>Change sounds</button>
-    </div>
-  );
-  
-}
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
 ```
 
-### ```useMetronome(beatsPerMinute, beatsPerMeasure, [strongTick, weakTick])```
-> returns an [object](#object)
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-#### beatsPerMinute
-> ```int``` | default: ```60```
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-#### beatsPerMeasure
-> ```int``` | default: ```4```
-
-#### strongTick
-> ```audio file```
-
-#### weakTick
-> ```audio file```
-
-### ```object```
-
-#### beatsPerMeasure
-> ```int```
-
-The beats per measure the metronome is ticking on
-
-#### bpm
-> ```int```
-
-The beats per minute the metronome is ticking on
-
-#### isTicking
-> ```boolean```
-
-Returns true if the metronome is currently ticking
-
-#### setBeatsPerMeasure
-> ```function```
-
-Sets the beats per measure the metronome will tick on
-
-#### setBpm
-> ```function```
-
-Sets the beats per minute the metronome will tick on
-
-#### setSounds
-> ```function```
-
-Sets the sounds metronome will use for its ticks
-
-#### startMetronome
-> ```function```
-
-Starts the metronome
-
-#### stopMetronome
-> ```function```
-
-Stops the metronome
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```

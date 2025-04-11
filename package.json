@@ -1,59 +1,29 @@
 {
   "name": "react-metronome-hook",
-  "version": "1.0.5",
-  "description": "A react hook to keep in time",
-  "main": "lib/index.js",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "build": "npm run clean && rollup -c rollup.config.js",
-    "clean": "rimraf lib/",
-    "develop": "rollup -c rollup.config.js -w",
-    "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix"
-  },
-  "author": "thepenskefile",
-  "license": "MIT",
-  "peerDependencies": {
-    "react": "^16.8.0"
-  },
-  "devDependencies": {
-    "@medipass/eslint-config-react-medipass": "8.3.0",
-    "babel-cli": "6.26.0",
-    "babel-core": "6.26.0",
-    "babel-eslint": "8.2.1",
-    "babel-plugin-external-helpers": "6.22.0",
-    "babel-plugin-transform-class-properties": "6.24.1",
-    "babel-plugin-transform-object-rest-spread": "6.26.0",
-    "babel-preset-env": "1.6.1",
-    "babel-preset-react": "6.24.1",
-    "eslint": "4.16.0",
-    "eslint-config-prettier": "^4.2.0",
-    "eslint-config-react-app": "2.1.0",
-    "eslint-plugin-flowtype": "2.41.0",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-prettier": "^3.1.0",
-    "eslint-plugin-react": "^7.13.0",
-    "flow-bin": "0.72.0",
-    "prettier": "^1.17.1",
-    "prop-types": "15.6.1",
-    "react-dom": "16.8.6",
-    "rimraf": "2.6.2",
-    "rollup": "0.54.1",
-    "rollup-plugin-babel": "3.0.3",
-    "rollup-plugin-uglify": "3.0.0",
-    "uglify-es": "3.3.9"
-  },
-  "eslintConfig": {
-    "extends": [
-      "@medipass/react-medipass"
-    ],
-    "settings": {
-      "react": {
-        "version": "latest"
-      }
-    }
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "lodash": "4.17.11"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react-swc": "^3.8.0",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.24.1",
+    "vite": "^6.2.0"
   }
 }
