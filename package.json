@@ -3,7 +3,7 @@
   "private": false,
   "author": "thepenskefile",
   "license": "MIT",
-  "version": "2.0.1-1",
+  "version": "2.0.1-2",
   "type": "module",
   "main": "./dist/main.js",
   "module": "./dist/main.js",
