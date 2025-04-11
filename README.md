@@ -1,102 +1,111 @@
-# react-metronome-hook
-A react hook to keep in time
+# React Metronome Hook
 
-[Example](https://codesandbox.io/s/m7k474o1v8)
+A custom React hook for creating a metronome with configurable tempo, time signature, and sound effects.
 
-## Install
-`
-npm i react-metronome-hook
-`
+## Features
 
-## Usage
-```jsx
-import { useMetronome } from 'react-metronome-hook';
-import click1 from './click1.wav';
-import click2 from './click2.wav';
-import click3 from './click3.wav';
-import click4 from './click4.wav';
+- Configurable tempo (BPM)
+- Customizable time signature
+- Support for different sound effects for downbeat and upbeat
+- Volume control
+- Play/pause functionality
+- Current beat tracking
 
-function App() {
+## Installation
 
-  const {
-    startMetronome,
-    isTicking,
-    stopMetronome,
-    bpm,
-    setBpm,
-    setBeatsPerMeasure,
-    setSounds
-  } = useMetronome(120, 4, [click1, click2]);
-  
-  return (
-    <div>
-      <button onClick={isTicking ? stopMetronome : startMetronome}>
-        {isTicking ? "Stop" : "Start"}
-      </button>
-      <div>{bpm}</div>
-      <input placeholder="Change BPM" onChange={e => setBpm(e.target.value)} />
-      <input placeholder="Change beats per measure" onChange={e => setBeatsPerMeasure(e.target.value)} />
-      <button onClick={() => setSounds([click3, click4])}>Change sounds</button>
-    </div>
-  );
-  
-}
-
+```bash
+npm install react-metronome-hook
+# or
+yarn add react-metronome-hook
 ```
 
-### ```useMetronome(beatsPerMinute, beatsPerMeasure, [strongTick, weakTick])```
-> returns an [object](#object)
+## Usage
 
-#### beatsPerMinute
-> ```int``` | default: ```60```
+```tsx
+import { useMetronome } from "react-metronome-hook";
 
-#### beatsPerMeasure
-> ```int``` | default: ```4```
+function MetronomeComponent() {
+  const {
+    tempo,
+    isPlaying,
+    currentBeat,
+    beatsPerMeasure,
+    setTempo,
+    setTimeSignature,
+    startMetronome,
+    stopMetronome,
+    toggleMetronome,
+  } = useMetronome({
+    initialTempo: 120,
+    initialBeatsPerMeasure: 4,
+    initialTickSounds: ["/path/to/downbeat.mp3", "/path/to/upbeat.mp3"],
+    initialVolume: 0.8,
+  });
 
-#### strongTick
-> ```audio file```
+  return (
+    <div>
+      <div>Current Beat: {currentBeat}</div>
+      <div>Tempo: {tempo} BPM</div>
+      <div>Time Signature: {beatsPerMeasure}/4</div>
+      <button onClick={toggleMetronome}>{isPlaying ? "Stop" : "Start"}</button>
+    </div>
+  );
+}
+```
 
-#### weakTick
-> ```audio file```
+## API
 
-### ```object```
+### `useMetronome` Hook
 
-#### beatsPerMeasure
-> ```int```
+#### Props
 
-The beats per measure the metronome is ticking on
+```typescript
+interface UseMetronomeProps {
+  initialTempo?: number; // Default: 60
+  initialBeatsPerMeasure?: number; // Default: 4
+  initialTickSounds: [string, string]; // [downbeatSound, upbeatSound]
+  initialVolume?: number; // Default: 1
+}
+```
 
-#### bpm
-> ```int```
+#### Return Value
 
-The beats per minute the metronome is ticking on
+```typescript
+interface MetronomeControls {
+  tempo: number;
+  isPlaying: boolean;
+  currentBeat: number;
+  beatsPerMeasure: number;
+  volume: number;
+  setTempo: (value: number) => void;
+  setTimeSignature: (value: number) => void;
+  setTickSounds: (sounds: [string, string]) => void;
+  setVolume: (volume: number) => void;
+  startMetronome: () => void;
+  stopMetronome: () => void;
+  toggleMetronome: () => void;
+}
+```
 
-#### isTicking
-> ```boolean```
+## Development
 
-Returns true if the metronome is currently ticking
+```bash
+# Install dependencies
+npm install
 
-#### setBeatsPerMeasure
-> ```function```
+# Start development server
+npm run dev
 
-Sets the beats per measure the metronome will tick on
+# Build library
+npm run build
 
-#### setBpm
-> ```function```
+# Run tests
+npm test
 
-Sets the beats per minute the metronome will tick on
+# Lint code
+npm run lint
+```
 
-#### setSounds
-> ```function```
+## License
 
-Sets the sounds metronome will use for its ticks
-
-#### startMetronome
-> ```function```
-
-Starts the metronome
-
-#### stopMetronome
-> ```function```
-
-Stops the metronome
+MIT
