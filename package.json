@@ -5,16 +5,16 @@
   "license": "MIT",
   "version": "2.0.1-0",
   "type": "module",
-  "main": "./dist/react-metronome-hook.js",
-  "module": "./dist/react-metronome-hook.js",
-  "types": "./dist/react-metronome-hook.d.ts",
+  "main": "./dist/main.js",
+  "module": "./dist/main.js",
+  "types": "./dist/main.d.ts",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/react-metronome-hook.js",
-      "require": "./dist/react-metronome-hook.umd.cjs"
+      "import": "./dist/main.js",
+      "types": "./dist/main.d.ts"
     }
   },
   "scripts": {
