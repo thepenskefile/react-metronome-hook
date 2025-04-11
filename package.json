@@ -1,6 +1,8 @@
 {
   "name": "react-metronome-hook",
   "private": false,
+  "author": "thepenskefile",
+  "license": "MIT",
   "version": "2.0.1-0",
   "type": "module",
   "main": "./dist/react-metronome-hook.js",
