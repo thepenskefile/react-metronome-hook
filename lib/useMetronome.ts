@@ -139,9 +139,13 @@ export const useMetronome = ({
    */
   const setTimeSignature = (newBeatsPerMeasure: number) => {
     if (!isNaN(newBeatsPerMeasure)) {
-      setBeatsPerMeasureState(validateBeatsPerMeasure(newBeatsPerMeasure));
+      const newValue = validateBeatsPerMeasure(newBeatsPerMeasure);
+      setBeatsPerMeasureState(newValue);
+      // Reset current beat to first beat when time signature changes
+      setCurrentBeat(FIRST_BEAT);
     } else {
       setBeatsPerMeasureState(DEFAULT_BEATS_PER_MEASURE);
+      setCurrentBeat(FIRST_BEAT);
     }
   };
 
@@ -198,7 +202,14 @@ export const useMetronome = ({
   const playBeat = useCallback(() => {
     resetAudio();
     setCurrentBeat((beat) => {
-      if (beat === FIRST_BEAT) {
+      const nextBeat = beat + 1;
+      // Play the appropriate sound
+      if (nextBeat > beatsPerMeasure) {
+        if (downbeatSound) {
+          downbeatSound.play().catch(console.error);
+        }
+        return FIRST_BEAT;
+      } else if (nextBeat === FIRST_BEAT) {
         if (downbeatSound) {
           downbeatSound.play().catch(console.error);
         }
@@ -207,7 +218,7 @@ export const useMetronome = ({
           upbeatSound.play().catch(console.error);
         }
       }
-      return beat === beatsPerMeasure ? FIRST_BEAT : beat + 1;
+      return nextBeat;
     });
   }, [beatsPerMeasure, downbeatSound, upbeatSound, resetAudio]);
 
