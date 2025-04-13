@@ -24,6 +24,9 @@ yarn add react-metronome-hook
 ```tsx
 import { useMetronome } from "react-metronome-hook";
 
+import downbeat from "/path/to/downbeat.mp3";
+import upbeat from "/path/to/upbeat.mp3";
+
 function MetronomeComponent() {
   const {
     tempo,
@@ -38,7 +41,7 @@ function MetronomeComponent() {
   } = useMetronome({
     initialTempo: 120,
     initialBeatsPerMeasure: 4,
-    initialTickSounds: ["/path/to/downbeat.mp3", "/path/to/upbeat.mp3"],
+    initialTickSounds: [downbeat, upbeat],
     initialVolume: 0.8,
   });
 
